@@ -1,0 +1,36 @@
+#!/bin/bash
+echo ""
+echo -e "\033[1mListo para comenzar el Laboratorio\033[0m"
+echo -e "\033[1mEste script le rompera su sistema literalmente\033[0m"
+echo -e "\033[1mSon unos pocos cambios para que su sistema quede listo\n\033[0m"
+
+for i in {5..1};do echo -n "$i." && sleep 1; done
+echo ""
+
+### Apache ###
+yum install -y httpd httpd-manual
+systemctl start httpd
+systemctl enable httpd
+firewall-cmd --permanent --add-service=http
+firewall-cmd --reload
+mkdir /web1
+echo "Hola esta es una web de pruebas" >> /web1/index.html
+rm -rf /etc/httpd/conf.d/welcome.conf
+rm -rf /etc/httpd/conf.d/autoindex.conf
+systemctl restart httpd
+
+echo "<VirtualHost *:80>" >> /etc/httpd/conf.d/vhost01.conf
+echo "ServerAdmin webmaster@rhel8cliente1.labrhel.com" >> /etc/httpd/conf.d/vhost01.conf
+echo "DocumentRoot "/web1"" >> /etc/httpd/conf.d/vhost01.conf
+echo "ServerName rhel8cliente1.labrhel.com" >> /etc/httpd/conf.d/vhost01.conf
+echo "ServerAlias rhel8cliente1.labrhel.com" >> /etc/httpd/conf.d/vhost01.conf
+echo "ErrorLog "/var/log/httpd/rhel8cliente1.labrhel.com-error_log"" >> /etc/httpd/conf.d/vhost01.conf
+echo "CustomLog "/var/log/httpd/rhel8cliente1.labrhel.com-access_log" combined" >> /etc/httpd/conf.d/vhost01.conf
+echo "</VirtualHost>" >> /etc/httpd/conf.d/vhost01.conf
+echo "<Directory "/web1">" >> /etc/httpd/conf.d/vhost01.conf
+echo "AllowOverride None" >> /etc/httpd/conf.d/vhost01.conf
+echo "Require all granted" >> /etc/httpd/conf.d/vhost01.conf
+echo "</Directory>" >> /etc/httpd/conf.d/vhost01.conf
+
+systemctl restart httpd
+
