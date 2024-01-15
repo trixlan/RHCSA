@@ -751,6 +751,7 @@ Para que cambie el usuario la contraseña en el proximo loggeo
 # chage -d 0 ger
 Calcular la fecha
 # date -d "+87 days" +"%Y-%m-%d"
+# date --date='+20 day' +%Y-%m-%d
 Restringir el acceso de un usuario
 # usermod -L dev
 # usermod -L -e 2023-11-13 dev

@@ -86,7 +86,7 @@ Restringir el acceso de un usuario
 
 ## Contenedores
 ```shell
-Contenedores como servicio
+Contenedores como servicio - Usuario
 # mkdir /home/ger/.config/systemd/user
 Este comando crear un archivo container-web.service
 # podman generate systemd --name web --files --new
@@ -96,9 +96,19 @@ Este comando crear un archivo container-web.service
 # systemctl --user enable container-web
 # systemctl --user start container-web
 # systemctl --user status container-web
-# loginctl enable-linger ger 
+# loginctl enable-linger ger
 o
 # loginctl enable-linger $USER 
+
+Contenedores como servicio - Root
+Este comando crear un archivo container-web.service
+# podman generate systemd --name web --files --new
+--name hace referencia al nombre del pod
+# cp container-web.service /etc/systemd/system
+# systemctl daemon-reload
+# systemctl enable container-web
+# systemctl start container-web
+# systemctl status container-web
 ```
 
 ## Busquedas
