@@ -1,6 +1,10 @@
 # Resumen Examen RHCSA
 
-## ***Network***
+**Indice**
+1. [Network](#id1)
+2. [Informacion de las interfaces de Red](#id2)
+
+## ***Network*** <a name="id1"></a>
 
 ***Ruta***
 
@@ -19,7 +23,7 @@ GATEWAY=192.168.20.1
 DNS1=192.168.20.50
 ```
 
-### Informacion de las interfaces de Red
+### Informacion de las interfaces de Red <a name="id2"></a>
 ```shell
 # ip a
 # ip addr
@@ -334,7 +338,7 @@ Para mostrar las prioridades de swap usar
 
 ```shell
 Como crear un volumen logico con parted
-# parted /dev/vdb mklabel msdos
+# parted /dev/vdb mklabel msdos/gpt
 # parted /dev/vdb mkpart primary 1M 500M
 # parted /dev/vdb print set 1 lvm on
 # parted /dev/vdb print
@@ -621,8 +625,11 @@ Revisar registro del sistema
 Registros del inicio de la maquina
 # journalctl -b 1
 # journalctl --list-boots
+Numeros de lineas
 # journalctl -n 20
+Follow
 # journalctl -f 
+Priority
 # journalctl -p err
 # journalctl --since "-1 hour"
 # journalctl -f -u sshd
@@ -1003,6 +1010,8 @@ Para buscar una palabra dentro de man usar / y n para las siguientes busquedas
 ```shell
 Verificar si un puerto esta abierto
 # nmap rhel8master.labrhel.com -p 123 
+Escanear todos los puertos de una IP
+# nmap -Pn 10.24.41.5
 ```
 ## Tuberias
 ```shell
@@ -1064,4 +1073,13 @@ Comprimir con zip
 # zip archivo.zip file1 file2
 Descomprimir con zip
 # unzip archivo.zip
+```
+
+## SSH
+```bash
+Remover key from ~/.ssh/knowhost
+#$ ssh-keygen -R example.com
+
+Easiest way to copy ssh key to another host
+#$ ssh-copy-id ger@app.example.org
 ```
