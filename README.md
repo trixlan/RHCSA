@@ -1,10 +1,39 @@
 # Resumen Examen RHCSA
 
 **Indice**
-1. [Network](#id1)
-2. [Informacion de las interfaces de Red](#id2)
+1. [Network file](#id1)
+1. [Informacion de las interfaces de Red "ip"](#id2)
+1. [Administrar conexiones "nmcli"](#id3)
+1. [Nombre de Host](#id4)
+1. [Paquetes "yum"](#id5)
+1. [Repositorios](#id6)
+1. [Servicios](#id7)
+1. [Cambiar contraseña de root](#id8)
+1. [Busquedas](#id9)
+1. [Busqueda de Texto dentro de los archivos](#id10)
+1. [Particion de discos](#id11)
+1. [Volumenes logicos](#id12)
+1. [Compresion de almacenamiento VDO](#id13)
+1. [NFS Storage](#id14)
+1. [Fechas y tiempo](#id15)
+1. [Analisis y almacenamiento de registro del sistema](#id16)
+1. [SELinux](#id17)
+2. [Activar Cockpit](#id18)
+3. [Firewall](#id19)
+4. [Gestion de Usuarios y Grupos](#id20)
+5. [Archivos](#id21)
+6. [Programacion de tareas futuras](#id22)
+7. [Monitoreo](#id23)
+8. [Tunning](#id24)
+9. [Contenedores](#id25)
+10. [Man](#id26)
+11. [NMap](#id27)
+12. [Tuberias](#id28)
+13. [Puertos](#id29)
+14. [Compresion de archivos](#id30)
+15. [SSH](#id31)
 
-## ***Network*** <a name="id1"></a>
+## ***Network file*** <a name="id1"></a>
 
 ***Ruta***
 
@@ -23,7 +52,7 @@ GATEWAY=192.168.20.1
 DNS1=192.168.20.50
 ```
 
-### Informacion de las interfaces de Red <a name="id2"></a>
+### Informacion de las interfaces de Red "ip" <a name="id2"></a>
 ```shell
 # ip a
 # ip addr
@@ -41,7 +70,7 @@ Informacion de los sockets
 # ss -lt
 ```
 
-### Administrar conexiones
+### Administrar conexiones "nmcli" <a name="id3"></a>
 ```shell
 Directorio
 # /etc/sysconfig/network-scripts/ifcfg-enp1s0
@@ -68,7 +97,6 @@ Despues de aplicar los cambios
 # nmcli connection reload
 ```
 
-## Network
 ```shell
 Para actualizar una red se debe modificar la conexion
 # nmcli connection modify enp7s0 ipv4.addresses 172.24.12.10/24
@@ -82,7 +110,7 @@ Agregar una caracteristica adicional
 
 /etc/hostname
 
-### Nombre de Host
+### Nombre de Host <a name="id4"></a>
 ```shell
 # hostnamectl status
 Establecer el nombre del host
@@ -94,7 +122,7 @@ Establecer el nombre del host
 /etc/hosts
 /etc/resolv.conf
 
-### Resolucion de nombres de Host
+Resolucion de nombres de Host
 ```
 192.168.20.50 rhel8master.labrhel.com master master1 master2
 ```
@@ -103,10 +131,11 @@ Establecer el nombre del host
 Revision de nombres de host
 # host master
 # ping master
-# getent host master
+Busca informacion dentro de diferentes DB
+# getent host, passwd, group, services, shadows
 ```
 
-## ***Paquetes***
+## ***Paquetes*** "yum" <a name="id5"></a>
 
 ```shell
 Packetes
@@ -126,37 +155,6 @@ Mustra la informacion relacionada al punto 5
 # yum history info 5
 Elimina el paquete que se instalo en el punto 5
 # yum history undo 5
-```
-
-### Repositorios
-
-Ruta
-
-/etc/yum.repos.d/ sin key
-
-```
-[base1]
-name=Nombre del repo
-baseurl=https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhosdt/2/source/SRPMS
-enable=1
-gpgcheck=0
-```
-/etc/yum.repos.d/ con key
-
-```
-[base1]
-name=Nombre del repo
-baseurl=https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhosdt/2/source/SRPMS
-enable=1
-gpgcheck=1
-gpgkey=file:///ect/pki/rpm-gpg/key
-```
-
-Agregar un repo por comando
-```shell
-# dnf install dnf-utils
-# yum-config-manager --add-repo=https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhosdt/2/source/SRPMS
-# yu,-config-manager --enable
 ```
 
 Actualizar el kernel
@@ -192,7 +190,38 @@ Listar los repos
 # yum repolist --all
 ```
 
-## Servicios
+### Repositorios <a name="id6"></a>
+
+Ruta
+
+/etc/yum.repos.d/ sin key
+
+```
+[base1]
+name=Nombre del repo
+baseurl=https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhosdt/2/source/SRPMS
+enable=1
+gpgcheck=0
+```
+/etc/yum.repos.d/ con key
+
+```
+[base1]
+name=Nombre del repo
+baseurl=https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhosdt/2/source/SRPMS
+enable=1
+gpgcheck=1
+gpgkey=file:///ect/pki/rpm-gpg/key
+```
+
+Agregar un repo por comando
+```shell
+# dnf install dnf-utils
+# yum-config-manager --add-repo=https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhosdt/2/source/SRPMS
+# yu,-config-manager --enable
+```
+
+## Servicios <a name="id7"></a>
 
 ```shell
 # systemctl list-unit-files 
@@ -219,7 +248,7 @@ Para cambiar el target al momento del boot detener el arranche "e" y agregar
 ... rhgb quiet systemd.unit=graphical.target
 ```
 
-### Cambiar contraseña de Root
+### Cambiar contraseña de root <a name="id8"></a>
 ```shell
 Reiniciar la maquina y detener el boot y presionar "e" y agregar
 rd.break
@@ -235,7 +264,30 @@ Hace un relabel de todo el sistema
 # exit
 ```
 
-## Particion de discos
+## Busquedas <a name="id9"></a>
+```shell
+Por nombre del archivo 
+# find / -name Revision
+Por nombre del archivo May y min
+# find / -iname revision
+Por usuario
+# find / -user 1000/gercha
+Por tamaño mayor que 400M y menor que 500M
+# find / -size +400M -and -size -500M
+Por tipo archivo, menor que 800M y mayor que 400M y ejecutamos un comando adicional en cada archivo encontrado
+# find ~/Downloads/ -type f -size -800M -and -size +400M -exec ls -lah {} \;
+```
+
+## Busqueda de Texto dentro de los archivos <a name="id10"></a>
+```shell
+# grep -n Texto Archivo
+-n Muestra el numero de la linea donde encontro el texto
+-l Imprime el archivo donde encontro el Texto
+-i Ignora mayusculas y minusculas
+-r Recursivo en caso de directorios 
+```
+
+## Particion de discos <a name="id11"></a>
 
 ```shell
 Comando para ver los discos
@@ -280,29 +332,6 @@ Ejecutar los siguientes comandos despues de modificar el fstab
 # mount -a
 ```
 
-## Busquedas
-```shell
-Por nombre del archivo 
-# find / -name Revision
-Por nombre del archivo May y min
-# find / -iname revision
-Por usuario
-# find / -user 1000/gercha
-Por tamaño mayor que 400M y menor que 500M
-# find / -size +400M -and -size -500M
-Por tipo archivo, menor que 800M y mayor que 400M y ejecutamos un comando adicional en cada archivo encontrado
-# find ~/Downloads/ -type f -size -800M -and -size +400M -exec ls -lah {} \;
-```
-
-## Busqueda de Texto dentro de los archivos
-```shell
-# grep -n Texto Archivo
--n Muestra el numero de la linea donde encontro el texto
--l Imprime el archivo donde encontro el Texto
--i Ignora mayusculas y minusculas
--r Recursivo en caso de directorios 
-```
-
 ## SWAP
 ```shell
 # free -h
@@ -332,7 +361,7 @@ Para mostrar las prioridades de swap usar
 # swapon --show 
 ```
 
-## Volumenes logicos
+## Volumenes logicos <a name="id12"></a>
 
 ![Diagrama LVM](imagenes/lvm.png "Diagrama LVM")
 
@@ -442,6 +471,22 @@ Si queremos reducir el volumen fisico
 En caso de aplicar el comando anterior para XFS sin la opcion de -r se requiere 
 # xfs_growfs
 
+## Extender un volumen
+```shell
+Para agregar 80M
+lvextend /dev/vg_data/lv_data1 -L +80M -r -t
+Para definir a 80M
+lvextend /dev/vg_data/lv_data1 -L 80M -r -t
+Para agregar 80M con extend
+lvextend /dev/vg_data/lv_data1 -l +20 -r -t
+
+Para mostrar el PE Physical Extend
+# vgdisplay vg_data
+Una vez que conocemos el PE size lo podemos multiplicar o dividir para que nos de la cantidad de megas que necesitamos
+# echo "4*49" | bc  = 196M
+# echo "scale=3; 256/4" | bc  = 196M
+```
+
 Extender SWAP (Primero debemos agregar espacio al VG)
 # swapoff -v /dev/rhel/swap
 # free -h
@@ -481,7 +526,7 @@ Eliminar snapshot
 # stratis filesystem destroy lab_pool snap_file_system1
 ```
 
-## Compresion de almacenamiento VDO
+## Compresion de almacenamiento VDO <a name="id13"></a>
 ```shell
 Instalar los paquetes para usar
 # yum install vdo kmod-kvdo 
@@ -504,23 +549,7 @@ Para ver estadisticas se usa
 # vdo status ! grep -i dedupli
 ```
 
-## Extender un volumen
-```shell
-Para agregar 80M
-lvextend /dev/vg_data/lv_data1 -L +80M -r -t
-Para definir a 80M
-lvextend /dev/vg_data/lv_data1 -L 80M -r -t
-Para agregar 80M con extend
-lvextend /dev/vg_data/lv_data1 -l +20 -r -t
-
-Para mostrar el PE Physical Extend
-# vgdisplay vg_data
-Una vez que conocemos el PE size lo podemos multiplicar o dividir para que nos de la cantidad de megas que necesitamos
-# echo "4*49" | bc  = 196M
-# echo "scale=3; 256/4" | bc  = 196M
-```
-
-## NFS Storage
+## NFS Storage <a name="id14"></a>
 ```shell
 # mount rhel8master:/ /mnt/
 # showmount -e rhel8master
@@ -539,7 +568,7 @@ Una vez que conocemos el PE size lo podemos multiplicar o dividir para que nos d
 # systemctl daemon-reload
 # mount -a
 
-Automztizar el montaje de recursos indirecto
+Automatizar el montaje de recursos indirecto
 # yum install autofs
 # systemctl enable --now autofs
 # cat /etc/auto.master
@@ -578,7 +607,7 @@ Otra opcion pude ser
 
 ```
 
-## Analisis y alamcenamiento de registros del sistema
+## Fechas y tiempo <a name="id15"></a>
 ```shell
 Chrony
 # timedatectl
@@ -608,7 +637,11 @@ Verificar en el archivo chrony.conf del servidor
 allow 192.168.20.0/24
 Para seleccionar zonas horarias con un asistente seria con
 # tzselect
+```
 
+## Analisis y almacenamiento de registros del sistema <a name="id16"></a>
+
+```shell
 Journal
 Ubicacion
 # ls -las /run/log/journal/XXXXXX
@@ -642,7 +675,7 @@ _PID El PID del proceso
 _UID El UID del usuario que ejecuta el proceso
 _SYSTEMD_UNIT La unidad systemd que inicio el proceso
 
-``````
+```
 
 ## Registro del sistema Syslog
 
@@ -669,7 +702,7 @@ Logrotate
 # vim /etc/logrotate.conf
 ```
 
-## SELinux
+## SELinux <a name="id17"></a>
 ```shell
 Para revisar el modo en que esta SELinux
 # getenforce
@@ -693,11 +726,11 @@ Si cambia el contexto
 # cp ~/test1 /var/www/html/
 Si queremos cambiar el contexto
 # restorecon -Rv /var/www/html/
- Cambiar contextos temporal
- # chcon -t httpd_sys_context_t /apache2
+Cambiar contextos temporal
+# chcon -t httpd_sys_context_t /apache2
 
 Cambios en /etc/httpd/conf/httpd.conf
- DocumentRoot "/apache2"
+DocumentRoot "/apache2"
 
 #
 # Relax access to content within /var/www.
@@ -730,9 +763,10 @@ Cambiar permanente
 # setsebool -P XXX
 
 # vi /etc/httpd/conf.d/userdir.conf
+```
 
-
-Activar Cockpit
+## Activar Cockpit <a name="id18"></a>
+```shell
 # systemctl enable --now cockpit.socket
 Inspeccionar (Tambien se puede usar la web)
 # less /var/log/audit/audit.log
@@ -742,10 +776,9 @@ Para ver de forma amigable los logs
 # semodule -l XXX
 
 # ausearch -m AVC -ts recent
-
 ```
 
-## Firewall
+## Firewall <a name="id19"></a>
 ```shell
 # ls /etc/firewalld
 Muestra todas las zonas
@@ -770,7 +803,7 @@ Despues de cada cambio
 # firewall-cmd --reload
 ```
 
-## Gestion de Usuarios y Grupos
+## Gestion de Usuarios y Grupos <a name="id20"></a>
 ```shell
 Informacion de los usuarios
 # id
@@ -847,7 +880,7 @@ Configuraciones globales
 ```
 ![Contraseña tiempo](imagenes/contrasena-tiempo.png "Contraseña Tiempo")
 
-## Archivos
+## Archivos <a name="id21"></a>
 
 |Usuario |Grupo |Otros|
 |--------|------|-----|
@@ -891,7 +924,19 @@ Permisos especiales a un directorio a nivel grupo
 
 ![Permisos especiales](imagenes/permisos-especiales.png "Permisos especiales")
 
-## Programacion de tareas futuras
+## Manejo de archivos temporales
+```shell
+# cp /usr/lib/tempfiles.d/tmp.conf /etc/tempfiles.d/
+# systemd-tmpfiles --clean /etc/tmpfiles.d/tmp.conf
+# vim /etc/tmpfiles.d/momentaneos.conf
+Dentro del archivo
+d /run/momentaneos 0700 root root
+# systemd-tmpfiles --create /etc/tmpfiles.d/momentaneos.conf
+Para ejecutar la limpieza hacemos un clean
+# systemd-tmpfiles --clean /etc/tmpfiles.d/momentaneos.conf
+```
+
+## Programacion de tareas futuras <a name="id22"></a>
 ```shell
 Programar acciones futuras o repetitivas
 # crontab -l
@@ -907,19 +952,7 @@ Para los archivos dentro de /etc/cron.d/ requieren tener definido el usuario
 Si los archivos se encuentran dentro de /etc/cron.d/date_file se ejecutan en automatico (chmod +x date_file)
 ```
 
-## Manejo de archivos temporales
-```shell
-# cp /usr/lib/tempfiles.d/tmp.conf /etc/tempfiles.d/
-# systemd-tmpfiles --clean /etc/tmpfiles.d/tmp.conf
-# vim /etc/tmpfiles.d/momentaneos.conf
-Dentro del archivo
-d /run/momentaneos 0700 root root
-# systemd-tmpfiles --create /etc/tmpfiles.d/momentaneos.conf
-Para ejecutar la limpieza hacemos un clean
-# systemd-tmpfiles --clean /etc/tmpfiles.d/momentaneos.conf
-```
-
-## Monitoreo
+## Monitoreo <a name="id23"></a>
 ![Ayuda Top](imagenes/top.png "Ayuda top") 
 ```shell
 # top
@@ -928,7 +961,7 @@ Para ejecutar la limpieza hacemos un clean
 # uptime
 ```
 
-## Optimizar
+## Tunning <a name="id24"></a>
 ```shell
 # yum install tuned
 # systemctl enable --now tuned
@@ -938,7 +971,7 @@ Para ejecutar la limpieza hacemos un clean
 # tuned-adm recommend
 ```
 
-## Contenedores
+## Contenedores <a name="id25"></a>
 ```shell
 # yum module install container-tools
 # podman pull url-registry:latest
@@ -999,21 +1032,21 @@ Este comando crear un archivo container-web.service
 # systemctl start container-web
 # systemctl status container-web
 ```
-## Man
+## Man <a name="id26"></a>
 ```shell
 Para ver todos los documentos
 # man -k find
 Para buscar una palabra dentro de man usar / y n para las siguientes busquedas
 ```
 
-## Nmap
+## Nmap <a name="id27"></a>
 ```shell
 Verificar si un puerto esta abierto
 # nmap rhel8master.labrhel.com -p 123 
 Escanear todos los puertos de una IP
 # nmap -Pn 10.24.41.5
 ```
-## Tuberias
+## Tuberias <a name="id28"></a>
 ```shell
 Permite pasar el resultado de un comando a otro comando
 # |
@@ -1032,7 +1065,7 @@ Permite pasar la respuesta al siguiente comando
 # find ./ -name "thumbs.db" | xargs rm
 ```
 
-## Puertos
+## Puertos <a name="id29"></a>
 ```shell
 Revisar los puertos abiertos
 # netstat -an | grep tcp | grep LISTEN
@@ -1040,7 +1073,7 @@ Revisar los puertos abiertos
 -n muestra el numero del puerto
 ```
 
-## Compresion de archivos
+## Compresion de archivos <a name="id30"></a>
 ```shell
 Comprimir con tar
 # tar cfv archivo.tar file1 file2
@@ -1075,7 +1108,7 @@ Descomprimir con zip
 # unzip archivo.zip
 ```
 
-## SSH
+## SSH <a name="id31"></a>
 ```bash
 Remover key from ~/.ssh/knowhost
 #$ ssh-keygen -R example.com
