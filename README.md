@@ -487,14 +487,17 @@ Una vez que conocemos el PE size lo podemos multiplicar o dividir para que nos d
 # echo "scale=3; 256/4" | bc  = 196M
 ```
 
-Extender SWAP (Primero debemos agregar espacio al VG)
+### Extender SWAP (Primero debemos agregar espacio al VG)
+```shell
 # swapoff -v /dev/rhel/swap
 # free -h
 # lvextend  /dev/rhel/swap -l +100%FREE
 # mkswap /dev/rhel/swap 
 # swapon -av /dev/rhel/swap
+```
 
-Stratis
+### Stratis
+```shell
 Instalar los paquetes necesarios
 # yum install stratis-cli stratisd
 # systemctl status stratisd
