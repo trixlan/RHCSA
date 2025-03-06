@@ -981,6 +981,10 @@ Si los archivos se encuentran dentro de /etc/cron.d/date_file se ejecutan en aut
 # podman images
 # podman inspect url-image
 # podman rmi images
+Se recomienda crear una red y un pod para correr el contenedor
+# podman network create -n apps 
+# podman pod create -n postgres --network=apps -p 35439:5432 
+# podman run --name postgresInv -d -e POSTGRES_DB=inventario --pod=postgres -v ~/postgresInv:/var/lib/postgresql/data:Z postgres:9.6
 Si el usuario NO es root el puerto debe ser mayor que 1024
 Con la opción Z, Podman aplica automáticamente el tipo de contexto container_file_t SELinux al directorio de host.
 # podman run --name=rhel8 -d -p 8080:8080 -e MYSQL_USER=admin -v /home/ger/app:/var/lib/mysql:Z url-registry:latest
@@ -1001,6 +1005,11 @@ Con la opción Z, Podman aplica automáticamente el tipo de contexto container_f
 # podman info
 # podman search url-registry/rhel8
 # podman --no-trunc url-registry/rhel8
+
+Tagear una imagen y exportarla
+# podman tag imageID:latest myNewImage:newTag
+# podman save -o fedora-all.tar myNewImage:newTag
+# podman load --input images.tar
 
 Revisar una imagen antes de descargarla
 # skopeo inspect docker://registry.access.redhat.com/rhel8/toolbox
@@ -1116,6 +1125,13 @@ Descomprimir con zip
 Remover key from ~/.ssh/knowhost
 #$ ssh-keygen -R example.com
 
+Crear una key especifica en ~/.ssh/
+#$ ssh-keygen -f ger
+
 Easiest way to copy ssh key to another host
-#$ ssh-copy-id ger@app.example.org
+#$ ssh-copy-id -i ger.pub ger@app.example.org
+
+Para eliminar las key autorizadas se deben eliminar
+#$ vi ~/.ssh/authorized_keys
+una vez en el archivo dd sobre la linea que se quiera borrar
 ```
