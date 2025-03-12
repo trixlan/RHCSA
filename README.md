@@ -194,7 +194,7 @@ Listar los repos
 
 Ruta
 
-/etc/yum.repos.d/ sin key
+/etc/yum.repos.d/fedora.repo sin key
 
 ```
 [base1]
